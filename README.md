@@ -4,7 +4,7 @@
 
 - [X] Deve ser possível criar uma conta
 - [X] Deve ser possível buscar o extrato bancário do cliente
-- [] Deve ser possível realizar o depósito
+- [X] Deve ser possível realizar o depósito
 - [] Deve ser possível realizar o saque
 - [] Deve ser possível buscar o extrato bancário do cliente por data
 - [] Deve ser possível atualizar os dados da conta do cliente
@@ -16,7 +16,7 @@
 ## Regras de negócio
 
 - [X] Não deve ser possível cadastrar uma conta com CPF já existente.
-- [] Não deve ser possível realizar um deposito em uma conta inexistente.
+- [X] Não deve ser possível realizar um deposito em uma conta inexistente.
 - [X] Não deve ser possível buscar extrato de uma conta inexistente.
 - [] Não deve ser possível realizar um saque em uma conta inexistente.
 - [] Não deve ser possível realizar um saque com valor maior do que o saldo da conta.

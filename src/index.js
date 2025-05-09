@@ -7,12 +7,21 @@ app.use(express.json());
 
 const customers = [];
 
-/**
- * cpf - string
- * name - string
- * id - uuid
- * statement - []
-*/
+function verifyIfExistsAccountCPF(req, res, next) {
+  const { cpf } = req.header
+
+  const customer = customers.find((customer) => customer.cpf === cpf)
+
+  if (!customer) {
+    return res.status(400).json({ error: "Customer not found" });
+  }
+
+  req.customer = customer
+
+  return next()
+}
+
+
 app.post("/account", (req, res) => {
   const { cpf, name } = req.body
 
@@ -38,19 +47,30 @@ app.post("/account", (req, res) => {
   return res.status(201).send()
 });
 
-app.get("/statement/:cpf", (req, res) => {
-  const { cpf } = req.header
-
-  const customer = customers.find((customer) => customer.cpf === cpf)
-
-  if (!customer) {
-    return res.status(400).json({ error: "Customer not found" });
-  }
+app.get("/statement/:cpf", verifyIfExistsAccountCPF, (req, res) => {
+  const { customer } = req
 
   return res.json(customer.statement)
 })
 
-app.listen(3000, () => {
-  console.log("Server is running on port 3000");
-});
+app.post("/deposit", verifyIfExistsAccountCPF, (req, res) => {
+  const { customer } = req
+
+  const { amount } = req.body
+
+  if (!amount) {
+    return res.status(400).json({ error: "Amount is required" });
+  }
+
+  customer.statement.push({
+    type: 'credit',
+    amount,
+    created_at: new Date(),
+    description: 'Depósito'
+  })
+
+  return res.status(201).send()
+})
+
+app.listen(3000);
 

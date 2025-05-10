@@ -121,5 +121,33 @@ app.get("/statement/:date", verifyIfExistsAccountCPF, (req, res) => {
   return res.json(customer.statement)
 })
 
+app.put("/account", verifyIfExistsAccountCPF, (req, res) => {
+  const { customer } = req
+
+  const { name } = req.body
+
+  if (!name) {
+    return res.status(400).json({ error: "Name is required" });
+  }
+
+  customer.name = name
+
+  return res.status(201).send()
+})
+
+app.get("/account", verifyIfExistsAccountCPF, (req, res) => {
+  const { customer } = req
+
+  return res.json(customer)
+})
+
+app.delete("/account", verifyIfExistsAccountCPF, (req, res) => {
+  const { customer } = req
+
+  customers.splice(customers.indexOf(customer), 1)
+
+  return res.status(201).send()
+})
+
 app.listen(3000);
 
